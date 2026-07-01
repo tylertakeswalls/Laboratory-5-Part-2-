@@ -1,0 +1,306 @@
+/* Modern CSS Variables for Automotive UI Theme - Light Showroom Edition */
+:root {
+    --bg-color: #f1f5f9; /* Bright, modern light slate background */
+    --card-bg: #ffffff; /* Crisp white card background */
+    --text-main: #0f172a; /* Dark slate main text for sharp readability */
+    --text-muted: #475569; /* Balanced slate for labels and secondary text */
+    --theme-dark: #0f172a; /* Unified dark solid color for header, button, and footer */
+    --border-color: #cbd5e1; /* Clear input bounds borders */
+    --shadow: 0 10px 30px rgba(15, 23, 42, 0.08); /* Soft, subtle ambient shadow */
+    --radius: 12px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Header Styling - Plain Solid Theme Matching Footer */
+header {
+    background-color: var(--theme-dark);
+    color: #ffffff;
+    padding: 2.5rem 1rem;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3.5rem;
+    letter-spacing: 2px;
+    font-weight: 400;
+}
+
+header p {
+    font-size: 0.95rem;
+    color: #38bdf8; /* Sharp electric blue text accent */
+    margin-top: 0.5rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Main Container Layout */
+main {
+    flex: 1;
+    max-width: 750px;
+    width: 100%;
+    margin: 2.5rem auto;
+    padding: 0 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* Card Layout Styling */
+.kiosk-card {
+    background: var(--card-bg);
+    padding: 2.5rem;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(203, 213, 225, 0.6);
+}
+
+/* Centered Form Header Section Title */
+.section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.2rem;
+    letter-spacing: 1px;
+    margin-bottom: 2rem;
+    color: var(--text-main);
+    text-align: center;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 0.75rem;
+}
+
+/* Clean & Aligned Form Elements */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+}
+
+/* Forces all input types and selects to match perfectly in height and style */
+input[type="text"],
+input[type="number"],
+select {
+    font-family: 'Inter', sans-serif;
+    padding: 0.8rem 1rem;
+    font-size: 1rem;
+    height: 48px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background-color: #f8fafc;
+    color: var(--text-main);
+    transition: all 0.2s ease;
+    outline: none;
+    width: 100%;
+}
+
+input[type="text"]::placeholder,
+input[type="number"]::placeholder {
+    color: #94a3b8;
+}
+
+input:focus, select:focus {
+    border-color: #38bdf8;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+}
+
+/* Submission Button - Styled Plain to Match Header & Footer Theme */
+button[type="submit"] {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem;
+    letter-spacing: 1px;
+    background-color: var(--theme-dark);
+    color: #ffffff;
+    font-weight: bold;
+    border: none;
+    height: 54px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin-top: 0.5rem;
+    width: 100%;
+    box-shadow: 0 4px 10px rgba(15, 23, 42, 0.15);
+}
+
+button[type="submit"]:hover {
+    background-color: #1e293b; /* Slightly lighter shade for clear hover visibility */
+}
+
+/* Dynamic Result Card UI Layout */
+#resultCard {
+    transition: all 0.4s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    color: #ffffff; /* Text stays white inside dynamic color status cards */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+#resultCard.hidden {
+    display: none;
+}
+
+.result-header {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.5rem;
+    letter-spacing: 1px;
+    line-height: 1;
+}
+
+.index-badge {
+    font-family: 'Bebas Neue', sans-serif;
+    display: inline-block;
+    font-size: 3.5rem;
+    margin: 0.5rem 0;
+}
+
+.result-msg {
+    font-size: 1.1rem;
+    font-weight: 500;
+    background: rgba(0, 0, 0, 0.15);
+    padding: 1.2rem;
+    border-radius: 6px;
+    border-left: 4px solid rgba(255, 255, 255, 0.6);
+}
+
+/* Footer Styling - Plain Solid Theme matching the Header */
+footer {
+    background-color: var(--theme-dark);
+    color: #94a3b8;
+    text-align: center;
+    padding: 1.5rem;
+    font-size: 0.85rem;
+    margin-top: auto;
+}
+
+/* Custom Notification Modal Component Overlay */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(15, 23, 42, 0.6); /* Backdrop dimming layer */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-window {
+    background-color: var(--card-bg);
+    padding: 2.5rem;
+    max-width: 450px;
+    width: 90%;
+    border-radius: var(--radius);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--border-color);
+    text-align: center;
+    transform: scale(0.8);
+    transition: transform 0.3s ease;
+}
+
+.modal-overlay.active .modal-window {
+    transform: scale(1);
+}
+
+.modal-icon {
+    width: 60px;
+    height: 60px;
+    background-color: rgba(16, 185, 129, 0.1);
+    color: #10b981; /* Success Checkmark Emerald */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    margin: 0 auto 1.5rem auto;
+}
+
+.modal-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    letter-spacing: 1px;
+    color: var(--text-main);
+    margin-bottom: 0.75rem;
+}
+
+.modal-body {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    margin-bottom: 1.75rem;
+}
+
+.modal-btn {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    letter-spacing: 0.5px;
+    background-color: var(--theme-dark);
+    color: #ffffff;
+    border: none;
+    padding: 0.6rem 2rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.modal-btn:hover {
+    background-color: #1e293b;
+}
+
+/* Mobile Responsiveness Matrix */
+@media (max-width: 600px) {
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    header h1 {
+        font-size: 2.5rem;
+    }
+    .kiosk-card {
+        padding: 1.5rem;
+    }
+}

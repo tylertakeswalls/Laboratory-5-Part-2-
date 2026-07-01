@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EV Range & Charging Advisor</title>
+    <!-- Google Fonts Framework Integration -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Link to external CSS sheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Semantic Showroom Header -->
+    <header>
+        <h1>EV Range & Charging Advisor</h1>
+    </header>
+
+    <!-- Kiosk Interface Base Platform -->
+    <main>
+        <section class="kiosk-card">
+            <h2 class="section-title">Analyze Your Drive Profile</h2>
+            <form id="evForm" novalidate>
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" placeholder="Juan Dela Cruz" required>
+                </div>
+
+                <!-- Balanced Grid Row Matrix -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="distance">Weekly Commute (Kilometers)</label>
+                        <input type="number" id="distance" min="1" max="5000" placeholder="250" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="environment">Primary Driving Environment</label>
+                        <select id="environment" required>
+                            <option value="">Select Environment</option>
+                            <option value="City">City Traffic (Stop & Go | High Regen)</option>
+                            <option value="Highway">Highway Driving (High Speed | Constant Drain)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="chargingAccess">Do you have Dedicated Home/Office Charging Access?</label>
+                    <select id="chargingAccess" required>
+                        <option value="">Select Answer</option>
+                        <option value="Yes">Yes (Dedicated Home Charging Stall Available)</option>
+                        <option value="No">No (Relying Entirely On Public Charging Stalls)</option>
+                    </select>
+                </div>
+
+                <button type="submit" id="submitBtn">Submit</button>
+            </form>
+        </section>
+
+        <!-- Dynamic Output Result Section Container -->
+        <section id="resultCard" class="kiosk-card hidden">
+            <!-- Populated dynamically via JS layout engine -->
+        </section>
+    </main>
+
+    <!-- Success Notification Modal Layer Structure -->
+    <div class="modal-overlay" id="successModal">
+        <div class="modal-window">
+            <div class="modal-icon">&#10004;</div>
+            <h3 class="modal-title">Submission Successful</h3>
+            <p class="modal-message">Your drive profile has been successfully recorded.</p>
+            <button class="modal-btn" id="modalCloseBtn">OK</button>
+        </div>
+    </div>
+
+    <!-- Kiosk System Footer Matrix -->
+    <footer>
+        <p>&copy; Justin Tyler Arcilla || BIT33</p>
+    </footer>
+
+    <!-- Core Interactive Execution Script Engine -->
+    <script>
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzddNrNLA6s_oIlZMM-aGw6ypK11GuIRRoVfVABuwlEcoW5RcOHCUuL84vxkzspHlJd/exec";
+
+        document.getElementById('evForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const submitBtn = document.getElementById('submitBtn');
+            const nameEl = document.getElementById('name');
+            const distanceEl = document.getElementById('distance');
+            const environmentEl = document.getElementById('environment');
+            const chargingEl = document.getElementById('chargingAccess');
+
+            const name = nameEl.value.trim();
+            const distance = parseFloat(distanceEl.value);
+            const environment = environmentEl.value;
+            const chargingAccess = chargingEl.value;
+
+            // 1. IF-ELSE Control Structure: Form Input Validation Verification Pass
+            if (!name || isNaN(distance) || distance <= 0 || !environment || !chargingAccess) {
+                alert('Form inputs incomplete or invalid. Please check fields before committing assessment data.');
+                return;
+            }
+
+            // Calculation Core Configuration Logic
+            let environmentPenalty = (environment === "Highway") ? 1.2 : 1.0;
+            const estimatedWeeklyCharges = +((distance * environmentPenalty) / 350).toFixed(2);
+
+            let tier, message, color;
+
+            // 2. SWITCH-CASE Control Structure: Mapping EV Suitability Brackets
+            switch (true) {
+                case (estimatedWeeklyCharges <= 1.0 && chargingAccess === "Yes"):
+                    tier = 'Perfect EV Match Portfolio';
+                    color = '#10b981'; // Green Option
+                    message = `Outstanding application match. You only require approximately ${estimatedWeeklyCharges} full charge cycles per week, and your dedicated charging access ensures effortless maintenance. Fully Electric (BEV) vehicle matches your operational profile perfectly.`;
+                    break;
+                    
+                case (estimatedWeeklyCharges <= 2.2 || chargingAccess === "Yes"):
+                    tier = 'Highly Viable Alternative Option';
+                    color = '#0284c7'; // Electric Blue
+                    message = `Your commute footprint profiles nicely at around ${estimatedWeeklyCharges} charge cycles per week. Electric transition remains highly efficient and financially advantageous over traditional internal combustion options.`;
+                    break;
+                    
+                default:
+                    tier = 'Plug-In Hybrid (PHEV) / Range Extender Suggested';
+                    color = '#ea580c'; // Safety Amber Orange
+                    message = `Your configuration tracks a charge cycle profile of ${estimatedWeeklyCharges} cycles weekly. Combined with limited charging network access points, we advise transitioning into a Plug-in Hybrid vehicle to offset highway fuel costs without experiencing range anxiety.`;
+            }
+
+            // Fire Interface Output Pipeline Render Transformation
+            showResult(name, estimatedWeeklyCharges, tier, message, color);
+
+            // Execute Database Spreadsheet Sync Stream Matrix
+            pushDataToGoogleSheet(name, distance, environment, chargingAccess, estimatedWeeklyCharges, tier, submitBtn);
+        });
+
+        // UI View Layout Generation Pipeline
+        function showResult(name, charges, tier, message, color) {
+            const card = document.getElementById('resultCard');
+            card.className = "kiosk-card"; 
+            card.style.backgroundColor = color;
+
+            card.innerHTML = `
+                <h3 class="result-header">${name}'s Drive Profile Result</h3>
+                <div>Suitability Metric: <strong>${tier}</strong></div>
+                <div class="index-badge">${charges} Charge Cycle/s Per Week</div>
+                <p class="result-msg">${message}</p>
+            `;
+        }
+
+        // Fetch API Pipeline stream connection to Google Sheets Data Pipeline
+        function pushDataToGoogleSheet(name, distance, environment, charging, score, classification, button) {
+            // Lock UI system during processing state
+            button.disabled = true;
+            button.innerText = "Submitting Profile Data...";
+
+            const payload = {
+                name: name,
+                distance: distance,
+                environment: environment,
+                chargingAccess: charging,
+                chargeIndex: score,
+                tierClassification: classification
+            };
+
+            fetch(APPS_SCRIPT_URL, {
+                method: "POST",
+                mode: "no-cors", 
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(() => {
+                // Show Custom Modal Notification
+                toggleModal(true);
+            })
+            .catch(error => {
+                console.error("Transmission error identified:", error);
+                alert("Cloud registration failed. Kiosk internal storage engine failure.");
+            })
+            .finally(() => {
+                // Restore interactive status
+                button.disabled = false;
+                button.innerText = "Submit";
+            });
+        }
+
+        // Modal Control Toggle Engine
+        const modalOverlay = document.getElementById('successModal');
+        const modalCloseBtn = document.getElementById('modalCloseBtn');
+
+        function toggleModal(shouldOpen) {
+            if (shouldOpen) {
+                modalOverlay.classList.add('active');
+            } else {
+                modalOverlay.classList.remove('active');
+            }
+        }
+
+        modalCloseBtn.addEventListener('click', () => toggleModal(false));
+        
+        // Closes modal if clicking the outer background overlay area
+        modalOverlay.addEventListener('click', function(e) {
+            if (e.target === modalOverlay) {
+                toggleModal(false);
+            }
+        });
+    </script>
+</body>
+</html>
